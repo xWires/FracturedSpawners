@@ -12,7 +12,7 @@ import net.md_5.bungee.api.ChatColor;
 
 import xyz.tangledwires.fracturedspawners.util.PersistantDataContainerUtils;
 
-public class SpawnerRecipe implements Listener {
+public class RepairedSpawnerRecipe implements Listener {
     @EventHandler
     public void onPrepareItemCraft(PrepareItemCraftEvent event) {
         CraftingInventory inventory = event.getInventory();

@@ -8,10 +8,17 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import xyz.tangledwires.fracturedspawners.events.DropFracturedSpawner;
+import xyz.tangledwires.fracturedspawners.events.NoPlaceFracturedSpawner;
+import xyz.tangledwires.fracturedspawners.events.RepairedSpawnerRecipe;
+
 public class FracturedSpawners extends JavaPlugin {
     @Override
     public void onEnable() {
         setupRecipes();
+        getServer().getPluginManager().registerEvents(new DropFracturedSpawner(), this);
+        getServer().getPluginManager().registerEvents(new RepairedSpawnerRecipe(), this);
+        getServer().getPluginManager().registerEvents(new NoPlaceFracturedSpawner(), this);
         getLogger().info("FracturedSpawners enabled!");
     }
     @Override

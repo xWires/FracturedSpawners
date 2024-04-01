@@ -15,26 +15,31 @@ public class PersistantDataContainerUtils {
     private PersistantDataContainerUtils() {}
 
     /**
-     * Returns the list of command triggers on an item.
+     * Returns whether an ItemStack is a Fractured Spawner
      * 
-     * @param i The ItemStack to get the triggers from.
-     * @return A JSON formatted list of command triggers
+     * @param i The ItemStack to check.
+     * @return Either true or false.
      */
     public static boolean isFracturedSpawner(ItemStack i) {
         ItemMeta m = i.getItemMeta();
         if (m != null) {
             PersistentDataContainer pdc = m.getPersistentDataContainer();
-            return pdc.get(namespace, PersistentDataType.BOOLEAN);
+            if (pdc.get(namespace, PersistentDataType.BOOLEAN) != null) {
+                return pdc.get(namespace, PersistentDataType.BOOLEAN);
+            }
+            else {
+                return false;
+            }
         }
         else {
             return false;
         }
     }
     /**
-     * Sets the list of command triggers on an item.
+     * Sets whether an ItemStack is a Fractured Spawner
      * 
-     * @param i The ItemStack to set the triggers on
-     * @param s A JSON formatted string to set as the list of command triggers
+     * @param i The ItemStack to set the flag on.
+     * @param b Either true or false.
      */
     public static void setIsFracturedSpawner(ItemStack i, boolean b) {
         ItemMeta m = i.getItemMeta();
