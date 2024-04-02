@@ -26,14 +26,14 @@ public class FracturedSpawners extends JavaPlugin {
         getLogger().info("FracturedSpawners disabled!");
     }
     public void setupRecipes() {
-        NamespacedKey key = new NamespacedKey(this, "repairedSpawner");
+        NamespacedKey key = new NamespacedKey(this, "repaired_spawner");
         ItemStack resultSpawner = new ItemStack(Material.SPAWNER);
         ItemMeta m = resultSpawner.getItemMeta();
         m.setDisplayName(ChatColor.GOLD + "Repaired Spawner");
         ShapedRecipe spawnerRecipe = new ShapedRecipe(key, resultSpawner);
         spawnerRecipe.shape("*#*", "#@#", "*#*");
         spawnerRecipe.setIngredient('*', Material.DIAMOND);
-        spawnerRecipe.setIngredient('#', Material.NETHERITE_SCRAP);
+        spawnerRecipe.setIngredient('#', Material.ECHO_SHARD);
         spawnerRecipe.setIngredient('@', Material.SPAWNER);
         getServer().addRecipe(spawnerRecipe);
     }

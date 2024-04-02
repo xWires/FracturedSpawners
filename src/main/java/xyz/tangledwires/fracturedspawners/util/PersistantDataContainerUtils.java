@@ -10,7 +10,7 @@ import xyz.tangledwires.fracturedspawners.FracturedSpawners;
 
 public class PersistantDataContainerUtils {
     // Setup the namespace key "fracturedspawners:isFracturedSpawner"
-    static NamespacedKey namespace = new NamespacedKey(FracturedSpawners.getPlugin(FracturedSpawners.class), "isFracturedSpawner");
+    private static NamespacedKey fracturedNamespace = new NamespacedKey(FracturedSpawners.getPlugin(FracturedSpawners.class), "isFracturedSpawner");
 
     private PersistantDataContainerUtils() {}
 
@@ -24,8 +24,8 @@ public class PersistantDataContainerUtils {
         ItemMeta m = i.getItemMeta();
         if (m != null) {
             PersistentDataContainer pdc = m.getPersistentDataContainer();
-            if (pdc.get(namespace, PersistentDataType.BOOLEAN) != null) {
-                return pdc.get(namespace, PersistentDataType.BOOLEAN);
+            if (pdc.get(fracturedNamespace, PersistentDataType.BOOLEAN) != null) {
+                return pdc.get(fracturedNamespace, PersistentDataType.BOOLEAN);
             }
             else {
                 return false;
@@ -45,7 +45,7 @@ public class PersistantDataContainerUtils {
         ItemMeta m = i.getItemMeta();
         if (m != null) {
             PersistentDataContainer pdc = m.getPersistentDataContainer();
-            pdc.set(namespace, PersistentDataType.BOOLEAN, b);
+            pdc.set(fracturedNamespace, PersistentDataType.BOOLEAN, b);
             i.setItemMeta(m);
         }
     }
