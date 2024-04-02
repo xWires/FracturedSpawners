@@ -41,7 +41,17 @@ public class RepairedSpawnerRecipe implements Listener {
             rs.setItemMeta(newBSM);
             inventory.setResult(rs);
         }
-        else {
+        else if (
+            items[0] != null && items[0].getType() == Material.DIAMOND &&
+            items[1] != null && items[1].getType() == Material.ECHO_SHARD &&
+            items[2] != null && items[2].getType() == Material.DIAMOND &&
+            items[3] != null && items[3].getType() == Material.ECHO_SHARD &&
+            items[4] != null && items[4].getType() == Material.SPAWNER &&
+            items[5] != null && items[5].getType() == Material.ECHO_SHARD &&
+            items[6] != null && items[6].getType() == Material.DIAMOND &&
+            items[7] != null && items[7].getType() == Material.ECHO_SHARD &&
+            items[8] != null && items[8].getType() == Material.DIAMOND
+        ) {
             inventory.setResult(null);
         }
     }
