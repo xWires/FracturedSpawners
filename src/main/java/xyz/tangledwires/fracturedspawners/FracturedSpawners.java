@@ -1,5 +1,6 @@
 package xyz.tangledwires.fracturedspawners;
 
+import org.bstats.bukkit.Metrics;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -15,6 +16,9 @@ import xyz.tangledwires.fracturedspawners.events.RepairedSpawnerRecipe;
 public class FracturedSpawners extends JavaPlugin {
     @Override
     public void onEnable() {
+        int pluginId = 21486;
+        Metrics metrics = new Metrics(this, pluginId);
+        
         setupRecipes();
         getServer().getPluginManager().registerEvents(new DropFracturedSpawner(), this);
         getServer().getPluginManager().registerEvents(new RepairedSpawnerRecipe(), this);
