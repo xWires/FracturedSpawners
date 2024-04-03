@@ -4,16 +4,21 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.bstats.bukkit.Metrics;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import net.md_5.bungee.api.ChatColor;
 import xyz.tangledwires.fracturedspawners.events.DropFracturedSpawner;
 import xyz.tangledwires.fracturedspawners.events.NoPlaceFracturedSpawner;
 import xyz.tangledwires.fracturedspawners.events.RepairedSpawnerRecipe;
@@ -26,9 +31,20 @@ public class FracturedSpawners extends JavaPlugin {
     @Override
     public void onEnable() {
         int pluginId = 21486;
+        @SuppressWarnings("unused")
         Metrics metrics = new Metrics(this, pluginId);
         
+        FileConfiguration config = this.getConfig();
+        ArrayList<String> defaultAllowedTools = new ArrayList<String>();
+        defaultAllowedTools.add("*");
+        config.addDefault("silkTouchRequired", false);
+        config.addDefault("spawnerDropsInCreative", false);
+        config.addDefault("allowedTools", defaultAllowedTools);
+        config.options().copyDefaults(true);
+        this.saveConfig();
+
         setupRecipes();
+
         getServer().getPluginManager().registerEvents(new DropFracturedSpawner(), this);
         getServer().getPluginManager().registerEvents(new RepairedSpawnerRecipe(), this);
         getServer().getPluginManager().registerEvents(new NoPlaceFracturedSpawner(), this);
@@ -60,6 +76,21 @@ public class FracturedSpawners extends JavaPlugin {
     public void onDisable() {
         getLogger().info("FracturedSpawners disabled!");
     }
+    @Override
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if (cmd.getName().equalsIgnoreCase("fracturedspawners")) {
+            if (args.length > 0) {
+                if (args[0].equalsIgnoreCase("reload")) {
+                    this.reloadConfig();
+                    sender.sendMessage(ChatColor.GREEN + "Config reloaded!");
+                    return true;
+                }
+                return false;
+            }
+            return false;
+        }
+        return false;
+    }
     public void setupRecipes() {
         NamespacedKey key = new NamespacedKey(this, "repaired_spawner");
         ItemStack resultSpawner = new ItemStack(Material.SPAWNER);
@@ -71,5 +102,19 @@ public class FracturedSpawners extends JavaPlugin {
         spawnerRecipe.setIngredient('#', Material.ECHO_SHARD);
         spawnerRecipe.setIngredient('@', Material.SPAWNER);
         getServer().addRecipe(spawnerRecipe);
+    }
+    public List<Material> getAllowedTools() {
+        FileConfiguration config = this.getConfig();
+        List<?> allowedToolsStrings = config.getList("allowedTools");
+        ArrayList<Material> allowedToolsMaterials = new ArrayList<Material>();
+        if (allowedToolsStrings.contains("*")) {
+            for (Material m : Material.values()) {
+                allowedToolsMaterials.add(m);
+            }
+        }
+        for (Object allowed : allowedToolsStrings) {
+            allowedToolsMaterials.add(Material.matchMaterial((String)allowed));
+        }
+        return allowedToolsMaterials;
     }
 }

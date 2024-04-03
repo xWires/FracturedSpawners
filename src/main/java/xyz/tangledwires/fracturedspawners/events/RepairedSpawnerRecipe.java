@@ -23,36 +23,28 @@ public class RepairedSpawnerRecipe implements Listener {
             items[1] != null && items[1].getType() == Material.ECHO_SHARD &&
             items[2] != null && items[2].getType() == Material.DIAMOND &&
             items[3] != null && items[3].getType() == Material.ECHO_SHARD &&
-            items[4] != null && items[4].getType() == Material.SPAWNER && PersistantDataContainerUtils.isFracturedSpawner(items[4]) &&
-            items[5] != null && items[5].getType() == Material.ECHO_SHARD &&
-            items[6] != null && items[6].getType() == Material.DIAMOND &&
-            items[7] != null && items[7].getType() == Material.ECHO_SHARD &&
-            items[8] != null && items[8].getType() == Material.DIAMOND
-        ) {
-            BlockStateMeta oldBSM = (BlockStateMeta) items[4].getItemMeta();
-            CreatureSpawner oldCS = (CreatureSpawner) oldBSM.getBlockState();
-
-            ItemStack rs = SpawnerItems.getRepairedSpawner();
-            BlockStateMeta newBSM = (BlockStateMeta) rs.getItemMeta();
-            CreatureSpawner newCS = (CreatureSpawner) newBSM.getBlockState();
-
-            newCS.setSpawnedType(oldCS.getSpawnedType());
-            newBSM.setBlockState(newCS);
-            rs.setItemMeta(newBSM);
-            inventory.setResult(rs);
-        }
-        else if (
-            items[0] != null && items[0].getType() == Material.DIAMOND &&
-            items[1] != null && items[1].getType() == Material.ECHO_SHARD &&
-            items[2] != null && items[2].getType() == Material.DIAMOND &&
-            items[3] != null && items[3].getType() == Material.ECHO_SHARD &&
             items[4] != null && items[4].getType() == Material.SPAWNER &&
             items[5] != null && items[5].getType() == Material.ECHO_SHARD &&
             items[6] != null && items[6].getType() == Material.DIAMOND &&
             items[7] != null && items[7].getType() == Material.ECHO_SHARD &&
             items[8] != null && items[8].getType() == Material.DIAMOND
         ) {
-            inventory.setResult(null);
+            if (PersistantDataContainerUtils.isFracturedSpawner(items[4])) {
+                BlockStateMeta oldBSM = (BlockStateMeta) items[4].getItemMeta();
+                CreatureSpawner oldCS = (CreatureSpawner) oldBSM.getBlockState();
+
+                ItemStack rs = SpawnerItems.getRepairedSpawner();
+                BlockStateMeta newBSM = (BlockStateMeta) rs.getItemMeta();
+                CreatureSpawner newCS = (CreatureSpawner) newBSM.getBlockState();
+
+                newCS.setSpawnedType(oldCS.getSpawnedType());
+                newBSM.setBlockState(newCS);
+                rs.setItemMeta(newBSM);
+                inventory.setResult(rs);
+            }
+            else {
+                inventory.setResult(null);
+            }
         }
     }
 }
