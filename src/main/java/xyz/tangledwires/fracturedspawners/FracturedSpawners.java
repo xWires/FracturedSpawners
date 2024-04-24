@@ -19,8 +19,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.md_5.bungee.api.ChatColor;
-import xyz.tangledwires.fracturedspawners.events.DropFracturedSpawner;
+import xyz.tangledwires.fracturedspawners.events.DropSpawners;
 import xyz.tangledwires.fracturedspawners.events.NoPlaceFracturedSpawner;
+import xyz.tangledwires.fracturedspawners.events.PlaceRepairedSpawner;
 import xyz.tangledwires.fracturedspawners.events.RepairedSpawnerRecipe;
 import xyz.tangledwires.fracturedspawners.events.UpdateNotifier;
 
@@ -40,15 +41,17 @@ public class FracturedSpawners extends JavaPlugin {
         config.addDefault("silkTouchRequired", false);
         config.addDefault("spawnerDropsInCreative", false);
         config.addDefault("allowedTools", defaultAllowedTools);
+        config.addDefault("repairedSpawnersStayRepaired", true);
         config.options().copyDefaults(true);
         this.saveConfig();
 
         setupRecipes();
 
-        getServer().getPluginManager().registerEvents(new DropFracturedSpawner(), this);
+        getServer().getPluginManager().registerEvents(new DropSpawners(), this);
         getServer().getPluginManager().registerEvents(new RepairedSpawnerRecipe(), this);
         getServer().getPluginManager().registerEvents(new NoPlaceFracturedSpawner(), this);
         getServer().getPluginManager().registerEvents(new UpdateNotifier(), this);
+        getServer().getPluginManager().registerEvents(new PlaceRepairedSpawner(), this);
         /*
 		 * This checks whether the plugin is up to date.
 		 * The URL below returns the latest build number from Jenkins.
@@ -57,9 +60,9 @@ public class FracturedSpawners extends JavaPlugin {
 		 */
 		HttpClient httpClient = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://ci.tangledwires.xyz/job/FracturedSpawners/lastSuccessfulBuild/buildNumber"))
-                .GET()
-                .build();
+            .uri(URI.create("https://ci.tangledwires.xyz/job/FracturedSpawners/lastSuccessfulBuild/buildNumber"))
+            .GET()
+            .build();
 		try {
 			HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 			int newestVersion = Integer.parseInt(response.body());
@@ -105,15 +108,17 @@ public class FracturedSpawners extends JavaPlugin {
     }
     public List<Material> getAllowedTools() {
         FileConfiguration config = this.getConfig();
-        List<?> allowedToolsStrings = config.getList("allowedTools");
+        List<String> allowedToolsStrings = config.getStringList("allowedTools");
         ArrayList<Material> allowedToolsMaterials = new ArrayList<Material>();
         if (allowedToolsStrings.contains("*")) {
             for (Material m : Material.values()) {
                 allowedToolsMaterials.add(m);
             }
         }
-        for (Object allowed : allowedToolsStrings) {
-            allowedToolsMaterials.add(Material.matchMaterial((String)allowed));
+        else {
+            for (String allowed : allowedToolsStrings) {
+                allowedToolsMaterials.add(Material.matchMaterial(allowed));
+            }
         }
         return allowedToolsMaterials;
     }

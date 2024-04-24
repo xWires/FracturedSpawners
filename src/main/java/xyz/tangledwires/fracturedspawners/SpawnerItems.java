@@ -21,6 +21,7 @@ public class SpawnerItems {
         ItemMeta meta = stack.getItemMeta();
         meta.setDisplayName(ChatColor.GOLD + "Repaired Spawner");
         stack.setItemMeta(meta);
+        PersistantDataContainerUtils.setIsRepairedSpawner(stack, true);
         return stack;
     }
 }
