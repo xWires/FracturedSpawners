@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 
 import xyz.tangledwires.fracturedspawners.util.PersistantDataContainerUtils;
@@ -24,5 +25,9 @@ public class PlaceRepairedSpawner implements Listener {
                 cs.update();
             }
         }
+        BlockStateMeta itemBsm = (BlockStateMeta) eventItemStack.getItemMeta();
+        CreatureSpawner itemCs = (CreatureSpawner) itemBsm.getBlockState();
+        cs.setSpawnedType(itemCs.getSpawnedType());
+        cs.update();
     }
 }
