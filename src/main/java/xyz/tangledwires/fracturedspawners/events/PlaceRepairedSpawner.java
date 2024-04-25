@@ -16,14 +16,15 @@ public class PlaceRepairedSpawner implements Listener {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
         Block block = event.getBlock();
+        if (block.getType() != Material.SPAWNER) {
+            return;
+        }
         ItemStack eventItemStack = event.getItemInHand();
         CreatureSpawner cs = ((CreatureSpawner) block.getState());
-        if (block.getType() == Material.SPAWNER) {
-            if (PersistantDataContainerUtils.isRepairedSpawner(eventItemStack.getItemMeta().getPersistentDataContainer())) {
-                PersistentDataContainer pdc = cs.getPersistentDataContainer();
-                PersistantDataContainerUtils.setIsRepairedSpawner(pdc, true);
-                cs.update();
-            }
+        if (PersistantDataContainerUtils.isRepairedSpawner(eventItemStack.getItemMeta().getPersistentDataContainer())) {
+            PersistentDataContainer pdc = cs.getPersistentDataContainer();
+            PersistantDataContainerUtils.setIsRepairedSpawner(pdc, true);
+            cs.update();
         }
         BlockStateMeta itemBsm = (BlockStateMeta) eventItemStack.getItemMeta();
         CreatureSpawner itemCs = (CreatureSpawner) itemBsm.getBlockState();
