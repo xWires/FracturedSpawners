@@ -88,9 +88,7 @@ public class FracturedSpawners extends JavaPlugin {
                     sender.sendMessage(ChatColor.GREEN + "Config reloaded!");
                     return true;
                 }
-                return false;
             }
-            return false;
         }
         return false;
     }

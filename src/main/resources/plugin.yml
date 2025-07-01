@@ -1,11 +1,10 @@
 name: FracturedSpawners
 main: xyz.tangledwires.fracturedspawners.FracturedSpawners
 version: 0
-api-version: 1.20
+api-version: 1.21
 author: xWires
 commands:
   fracturedspawners:
     description: Manage FracturedSpawners
     usage: /fracturedspawners <reload>
     permission: fracturedspawners.admin
-    permission-message: You don't have permission.
